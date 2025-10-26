@@ -1,25 +1,25 @@
 .hierarchy-page {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 
 .hierarchy-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .hierarchy-title {
   margin: 0;
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 400;
 }
 
 .hierarchy-session {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 8px;
   font-size: 16px;
 }
 
@@ -32,6 +32,107 @@
   background: none;
   padding: 0;
   color: #1a45c2;
-  font-size: 16px;
+  text-decoration: underline;
   cursor: pointer;
+}
+
+.hierarchy-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hierarchy-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hierarchy-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hierarchy-toggle {
+  color: #6c2bc7;
+  font-size: 28px;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hierarchy-toggle--leaf {
+  cursor: default;
+  display: inline-flex;
+}
+
+.hierarchy-avatar {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #6c2bc7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hierarchy-avatar img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+}
+
+.hierarchy-avatar--initials {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: #6c2bc7;
+}
+
+.hierarchy-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hierarchy-name {
+  font-size: 18px;
+}
+
+.hierarchy-email {
+  font-size: 16px;
+  color: #4a4a4a;
+}
+
+.hierarchy-meta {
+  font-size: 16px;
+  color: #4a4a4a;
+}
+
+@media (max-width: 600px) {
+  .hierarchy-page {
+    gap: 32px;
+  }
+
+  .hierarchy-title {
+    font-size: 14px;
+  }
+
+  .hierarchy-session {
+    font-size: 14px;
+  }
+
+  .hierarchy-info {
+    gap: 2px;
+  }
 }

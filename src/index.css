@@ -7,9 +7,13 @@ body {
 .app-shell {
   border: 1px solid #6c2bc7;
   height: calc(100vh - 64px - 2px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 .app-content {
+  flex: 1;
   padding: 32px;
   display: flex;
   flex-direction: column;
