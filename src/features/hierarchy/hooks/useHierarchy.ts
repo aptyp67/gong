@@ -1,83 +1,78 @@
-import { useCallback, useEffect, useState } from "react";
-import { getAllUsers } from "../../../services/users";
-import { buildHierarchy, type HierarchyNode } from "../../../utils/hierarchy";
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetUsersQuery } from '../api/hierarchyApi'
+import { buildHierarchy, type HierarchyNode } from '../../../utils/hierarchy'
 
-type HierarchyStatus = "idle" | "loading" | "ready" | "error";
+type HierarchyStatus = 'idle' | 'loading' | 'ready' | 'error'
 
 export function useHierarchy() {
-  const [status, setStatus] = useState<HierarchyStatus>("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [nodes, setNodes] = useState<HierarchyNode[]>([]);
+  const { data: users, isLoading, isError } = useGetUsersQuery()
   const [collapsedManagers, setCollapsedManagers] = useState<Set<number>>(
-    () => new Set()
-  );
+    () => new Set(),
+  )
+
+  const nodes = useMemo<HierarchyNode[]>(
+    () => (users ? buildHierarchy(users) : []),
+    [users],
+  )
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      setStatus("loading");
-      setErrorMessage("");
-
-      try {
-        const users = await getAllUsers();
-
-        if (cancelled) {
-          return;
-        }
-
-        const hierarchy = buildHierarchy(users);
-        setNodes(hierarchy);
-        setCollapsedManagers(collectManagerIds(hierarchy));
-        setStatus("ready");
-      } catch {
-        if (!cancelled) {
-          setStatus("error");
-          setErrorMessage("Failed to load hierarchy.");
-        }
-      }
+    if (!nodes.length) {
+      setCollapsedManagers(new Set())
+      return
     }
 
-    load();
+    setCollapsedManagers((prev) => {
+      if (prev.size > 0) {
+        return prev
+      }
 
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+      return collectManagerIds(nodes)
+    })
+  }, [nodes])
+
+  const hasData = users !== undefined
+
+  const status: HierarchyStatus = isLoading
+    ? 'loading'
+    : isError
+      ? 'error'
+      : hasData
+        ? 'ready'
+        : 'idle'
 
   const toggleManager = useCallback((managerId: number) => {
     setCollapsedManagers((prev) => {
-      const next = new Set(prev);
+      const next = new Set(prev)
 
       if (next.has(managerId)) {
-        next.delete(managerId);
+        next.delete(managerId)
       } else {
-        next.add(managerId);
+        next.add(managerId)
       }
 
-      return next;
-    });
-  }, []);
+      return next
+    })
+  }, [])
 
   return {
     status,
-    errorMessage,
+    errorMessage: status === 'error' ? 'Failed to load hierarchy.' : '',
     nodes,
     collapsedManagers,
     toggleManager,
-  };
+  }
 }
 
 function collectManagerIds(nodes: HierarchyNode[]) {
-  const ids = new Set<number>();
+  const ids = new Set<number>()
 
   const walk = (node: HierarchyNode) => {
     if (node.children.length > 0) {
-      ids.add(node.user.id);
-      node.children.forEach(walk);
+      ids.add(node.user.id)
+      node.children.forEach(walk)
     }
-  };
+  }
 
-  nodes.forEach(walk);
-  return ids;
+  nodes.forEach(walk)
+  return ids
 }

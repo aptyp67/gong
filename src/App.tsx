@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './app/AppLayout'
-import { RequireAuth } from './app/auth/RequireAuth'
+import { RequireAuth } from './features/auth/RequireAuth'
 import { HierarchyPage } from './pages/hierarchy/HierarchyPage'
 import { LoginPage } from './pages/login/LoginPage'
 

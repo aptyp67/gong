@@ -1,39 +1,49 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../app/auth/useAuth";
-import "./LoginPage.css";
+import { useEffect, useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../../features/auth/authSlice'
+import { useAuth } from '../../features/auth/useAuth'
+import { useAppDispatch } from '../../store/hooks'
+import './LoginPage.css'
+
+const DEMO_EMAIL = 'anthony.xiouping@xtreet.tvl'
+const DEMO_PASSWORD = 'mllv9n0x'
 
 export function LoginPage() {
-  const navigate = useNavigate();
-  const { login, user } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { user, status, error, clearError } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     if (user) {
-      navigate("/hierarchy", { replace: true });
+      navigate('/hierarchy', { replace: true })
     }
-  }, [user, navigate]);
+  }, [user, navigate])
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    dispatch(login({ email, password }))
+  }
 
-    try {
-      await login(email, password);
-    } catch {
-      setError("Invalid email or password.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const isSubmitting = status === 'loading'
 
   return (
     <section className="login-page">
       <h1 className="login-title">Please login</h1>
+      <button
+        className="login-demo"
+        type="button"
+        onClick={() => {
+          setEmail(DEMO_EMAIL)
+          setPassword(DEMO_PASSWORD)
+          if (error) {
+            clearError()
+          }
+        }}
+      >
+        Use demo account
+      </button>
       <form className="login-card" onSubmit={handleSubmit}>
         <div className="login-field">
           <label htmlFor="login-email">email address:</label>
@@ -42,7 +52,12 @@ export function LoginPage() {
             name="email"
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              if (error) {
+                clearError()
+              }
+              setEmail(event.target.value)
+            }}
             required
           />
         </div>
@@ -54,7 +69,12 @@ export function LoginPage() {
             name="password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              if (error) {
+                clearError()
+              }
+              setPassword(event.target.value)
+            }}
             required
           />
         </div>
@@ -67,10 +87,10 @@ export function LoginPage() {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Logging..." : "Login"}
+            {isSubmitting ? 'Logging...' : 'Login'}
           </button>
         </div>
       </form>
     </section>
-  );
+  )
 }

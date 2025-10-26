@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../app/auth/useAuth'
+import { useAuth } from '../../features/auth/useAuth'
 import { HierarchyHeader } from '../../features/hierarchy/components/HierarchyHeader'
 import { HierarchyTree } from '../../features/hierarchy/components/HierarchyTree'
 import { useHierarchy } from '../../features/hierarchy/hooks/useHierarchy'
