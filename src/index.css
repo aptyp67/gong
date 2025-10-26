@@ -1,28 +1,15 @@
-:root {
-  font-family: Arial, sans-serif;
-  color: #1a1a1a;
-  background-color: #ffffff;
-}
-
 body {
-  margin: 0;
-}
-
-#root {
-  min-height: 100vh;
+  font-family: "Century Gothic", "Gill Sans", Arial, sans-serif;
+  line-height: 1.5;
+  margin: 32px;
 }
 
 .app-shell {
-  min-height: calc(100vh - 64px);
-  margin: 32px;
   border: 1px solid #6c2bc7;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
+  height: calc(100vh - 64px - 2px);
 }
 
 .app-content {
-  flex: 1;
   padding: 32px;
   display: flex;
   flex-direction: column;

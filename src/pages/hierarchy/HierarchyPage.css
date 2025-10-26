@@ -1,0 +1,37 @@
+.hierarchy-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hierarchy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hierarchy-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.hierarchy-session {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.hierarchy-username {
+  text-transform: lowercase;
+}
+
+.hierarchy-logout {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #1a45c2;
+  font-size: 16px;
+  cursor: pointer;
+}
